@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lanscape
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lanscape
+  template:
+    metadata:
+      labels:
+        app: lanscape
+    spec:
+      containers:
+        - name: lanscape
+          image: bang5:5000/lanscape_image
+          ports:
+          - containerPort: 8001
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: "kubernetes.io/hostname"
+                operator: In
+                values: ["bang"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lanscape
+spec:
+  ports:
+  - port: 80
+    targetPort: 8001
+  selector:
+    app: lanscape
