@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>lanscape</title>
+  </head>
+  <body>
+    <l-table></l-table>
+    <script type="module">
+      import { LitElement, html, customElement } from "https://cdn.skypack.dev/lit-element";
+      export class LanscapeTable extends LitElement {
+        static get properties() {
+          return {
+            report: { attribute: false },
+          };
+        }
+        constructor() {
+          super();
+          this.data = [];
+          fetch("/report")
+            .then((r) => r.json())
+            .then((j) => {
+              this.report = j;
+            });
+        }
+        render() {
+            const rows = this.report.map((row)=>{
+                return html`<tr>
+                  <td>${row.mac}</td>
+                  <td>${row.ip}</td>
+                    <td style="white-space: nowrap">${row.cat_name}</td>
+                    <td>${row.label}</td> <!-- ntop name -->
+                    <td>${row.info_label}</td> <!-- self network name -->
+                    <td>${row.host_os}</td>
+                    <td>${row.host_dev_type}</td>
+                    <td>${row.host_is_dhcp}</td>
+                    <td>${row.host_vlan}</td>
+                    <td>${Math.round((row.host_seen_first - Date.now() / 1000)/8640)/10}</td>
+                    <td>${Math.round(row.host_seen_last - Date.now() / 1000)}</td>
+                    <td>${Math.round(row.host_throughput_bps / 8)}</td>
+                    <td>${row.host_active_flows_as_client}</td>
+                    <td>${row.host_active_flows_as_server}</td>
+                    <td>${row.host_bytes_sent}</td>
+                    <td>${row.host_bytes_received}</td>
+                    <td>suspend/wake</td>
+                    <td>netroutes</td>
+                    <td>required</td>
+                    </tr>`;
+            })
+
+          return html`<table>
+            <tr>
+            <th>mac</th>
+            <th>ip</th>
+            <th>catname</th>
+            <th>ntop name</th>
+            <th>self network name</th>
+            <th>os</th>
+            <th>dev</th>
+            <th>dhcp</th>
+            <th>vlan</th>
+            <th>seen first (days)</th>
+            <th>seen last (sec)</th>
+            <th>throughput (bytes/sec)</th>
+            <th>flows as client</th>
+            <th>flows as server</th>
+            <th>bytes sent</th>
+            <th>bytes recv</th>
+            <th>suspend/wake</th>
+            <th>netroutes</th>
+            <th>required</th>
+            </tr>
+            ${rows}</table>`;
+        }
+      }
+      customElements.define("l-table", LanscapeTable);
+    </script>
+  </body>
+</html>

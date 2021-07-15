@@ -1,0 +1,8 @@
+petl
+requests
+docopt
+python-dateutil==2.8.1
+rdflib==5.0.0
+
+cycloneerr
+standardservice
