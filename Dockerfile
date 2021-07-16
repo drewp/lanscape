@@ -7,6 +7,7 @@ RUN pip3 install --index-url https://projects.bigasterisk.com/ --extra-index-url
 
 COPY *.py ./
 COPY index.html ./
+COPY *.n3 ./
 
 EXPOSE 8001
 

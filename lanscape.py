@@ -17,7 +17,7 @@ class Report(PrettyErrorHandler, cyclone.web.RequestHandler):
     def get(self):
         cat_names = {}
         g = Graph()
-        g.parse('/my/proj/homeauto/service/wifi/netdevices.n3', format='n3')
+        g.parse('netdevices.n3', format='n3')
         for s, o in g.subject_objects(RDFS.label):
             cat_names[s] = str(o)
         byMac = ingest_ntop.ingestNtop()

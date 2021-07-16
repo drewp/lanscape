@@ -16,7 +16,7 @@
         constructor() {
           super();
           this.data = [];
-          fetch("/report")
+          fetch("report")
             .then((r) => r.json())
             .then((j) => {
               this.report = j;
